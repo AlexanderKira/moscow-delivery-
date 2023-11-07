@@ -20,8 +20,14 @@ COPY ./_docker/app/php.ini /usr/local/etc/php/conf.d/php.ini
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN curl -sS https://getcomposer.org/installer | php -- \
     --filename=composer \
-    --install-dir=/usr/local/bin
+    --install-dir=/usr/local/bin \
 
-RUN chmod -R 777 /var/www/storage
+RUN composer install --no-interaction --no-plugins --no-scripts --prefer-dist
+
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install -y nodejs
+RUN apt-get install -y npm
+
+#RUN chmod -R 777 /var/www/storage
 
 WORKDIR /var/www
